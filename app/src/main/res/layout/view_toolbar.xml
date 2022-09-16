@@ -18,14 +18,7 @@
         app:layout_constraintEnd_toStartOf="@+id/toolbar_content"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/toolbar_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/app_logo" />
-    </LinearLayout>
+     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/toolbar_content"
