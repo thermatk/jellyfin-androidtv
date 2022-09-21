@@ -51,7 +51,27 @@ public class PlaybackHelper {
 
         switch (mainItem.getType()) {
             case EPISODE:
-                items.add(mainItem);
+                KoinJavaComponent.<ApiClient>get(ApiClient.class).GetIntrosAsync(mainItem.getId().toString(), userId.toString(), new Response<ItemsResult>() {
+                    @Override
+                    public void onResponse(ItemsResult response) {
+                        if (response.getTotalRecordCount() > 0){
+
+                            for (BaseItemDto intro : response.getItems()) {
+                                intro.setBaseItemType(BaseItemType.Trailer);
+                                items.add(ModelCompat.asSdk(intro));
+                            }
+                            Timber.i("%d intro items added for playback.", response.getTotalRecordCount());
+                        }
+                        //Finally, the main item including subsequent parts
+                        items.add(mainItem);
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        Timber.e(exception, "Error retrieving intros");
+                        items.add(mainItem);
+                    }
+                });
                 if (KoinJavaComponent.<UserPreferences>get(UserPreferences.class).get(UserPreferences.Companion.getMediaQueuingEnabled())) {
                     //add subsequent episodes
                     if (mainItem.getSeriesId() != null && mainItem.getId() != null) {
