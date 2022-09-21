@@ -1421,7 +1421,14 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
                 binding.itemTitle.setText(current.getSeriesName());
                 binding.itemSubtitle.setText(BaseItemExtensionsKt.getDisplayName(current, requireContext()));
             } else {
-                binding.itemTitle.setText(current.getName());
+                if (current.getName().contains("introTFH")) {
+                    hide();
+                    leanbackOverlayFragment.setShouldShowOverlay(false);
+                    hidePopupPanel();
+                    leanbackOverlayFragment.hideOverlay();
+                } else {
+                    binding.itemTitle.setText(current.getName());
+                }
             }
             // Update the logo
             String imageUrl = ImageUtils.getLogoImageUrl(current, 440, false);
